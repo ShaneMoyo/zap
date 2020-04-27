@@ -10,6 +10,13 @@ export default {
       })
   },
   getGistDetail(id) {
-
+    return fetch(`https://api.github.com/gists/${id}`)
+      .then(res => {
+        if (res.status !== 200) throw new Error(['Server error.']);
+        return res.json();
+      })
+      .catch(err => {
+        throw new Error(['Server error.'])
+      })
   }
 }

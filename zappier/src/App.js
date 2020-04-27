@@ -10,6 +10,7 @@ import './App.css';
 
 import github from './services/github';
 import Search from './components/search';
+import Gist from './components/gist';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -43,8 +44,22 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
 
         <Router>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/gist/123">About</Link>
+              </li>
+
+            </ul>
+          </nav>
         <div>
           <Switch>
+            <Route path="/gist/:id">
+              <Gist/>
+            </Route>
             <Route path="/">
               <Search
                 loading={loading}
