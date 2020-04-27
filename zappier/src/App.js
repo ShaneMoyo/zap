@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import moment from 'moment';
+import github from './services/github';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -17,11 +18,7 @@ function App() {
   const handleSubmit = () => {
     console.log('submit username: ' , username);
     setLoading(true);
-    return fetch(`https://api.github.com/users/${username}/gists`)
-      .then(res => {
-        if (res.status !== 200) throw new Error(['Server error.']);;
-        return res.json();
-      })
+    return github.getGistsByUsername(username)
       .then( gists => {
         console.log('gists: ', gists);
         setGists(gists)
@@ -30,6 +27,7 @@ function App() {
       })
       .catch(err => {
         console.log('error: ', err.message);
+        setGists([])
         setError(err.message)
         setLoading(false);
       })
@@ -47,6 +45,7 @@ function App() {
         <input type="text" onChange={({ target }) => handleUsernameChnage(target.value)}/>
         {error ? <p>{error}</p> : null}
         {gists.length ? <ul>{gistList}</ul> : null}
+        {loading ? <p>Loading...</p> : null}
         <button type="button" onClick={() => handleSubmit()}>Get gists</button>
       </header>
     </div>
